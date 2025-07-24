@@ -1,18 +1,21 @@
+import scala.util.Random
+import scala.io.StdIn
+import scala.language.postfixOps
+
 /*
-* MYSTERY NUMBER GAME
-*/
+ * 🎲 MysteryNumberGame - Où chaque chiffre cache un secret... sauras-tu le deviner ? 🕵️‍♂️✨
+ */
 
-object Akinator extends App {
 
-  import scala.util.Random
+object MysteryNumberGame extends App {
 
   // Definition of the Akinator Class
-  class Akinator() {
+  class MysteryNumber() {
 
     // --- Mystery number declaration ---
     val mysteryNumber = Random.between(0, 10) // valeur à deviner
 
-    // Méthode qui compare la suggestion à la valeure réelle
+    // Method that compares the sugestion to the actual value
     def deviner(userChoice: Int, attempts: Int): Boolean = {
       if (userChoice == mysteryNumber && attempts > 0) {
         println(s"\n🏆Bravo🏆 ! Le chiffre mystère était bien $mysteryNumber")
@@ -32,17 +35,17 @@ object Akinator extends App {
         println("🥁🥁🥁 le nombre mystère était...")
         println(
           s"""
-            |
-            |
-            |$mysteryNumber
-            |""".stripMargin)
+             |
+             |
+             |$mysteryNumber
+             |""".stripMargin)
         false
       }
     }
   }
 
   // --- Initialization ---
-  val akinator = new Akinator()
+  val akinator = new MysteryNumber()
   var continuer = true
   // --- Intro ---
   println(
@@ -65,5 +68,7 @@ object Akinator extends App {
     val resultat = akinator.deviner(choice, attempts) // Call of deviner() method
     continuer = resultat
   }
+
+  // version 1.1
 
 }
