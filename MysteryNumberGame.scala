@@ -9,22 +9,28 @@ import scala.language.postfixOps
 
 object MysteryNumberGame extends App {
 
+  import scala.util.Random
+
   // Definition of the Akinator Class
   class MysteryNumber() {
 
     // --- Mystery number declaration ---
-    val mysteryNumber = Random.between(0, 10) // valeur à deviner
+    val mysteryNumber = Random.between(0, 10) // Value to guess
+    //val mysteryNumber = 5 // Test value
 
-    // Method that compares the sugestion to the actual value
-    def deviner(userChoice: Int, attempts: Int): Boolean = {
-      if (userChoice == mysteryNumber && attempts > 0) {
+
+    // Method that compares the sugestion value to the actual value
+    def guessMethod(userChoice: Int, attempts: Int): Boolean = {
+
+      if (userChoice == mysteryNumber && attempts >= 0) {
         println(s"\n🏆Bravo🏆 ! Le chiffre mystère était bien $mysteryNumber")
 
         attempts match {
           case 4 => println("Waouh, du premier coup ! Ta médaille : 🥇")
           case 3 => println("Super, tu es perspicace ! Ta médaille : 🥈")
           case 2 => println("Bravo, tu t'en est bien sorti ! Ta médaille : 🥉")
-          case 1 => println("😫 Olala, tu n'étais pas chaud là, allez, prends ta revenche !")
+          case 1 => println("Bravo, tu m'as donné des suilleurs froides !")
+          case 0 => println("😫 Olala, tu n'étais pas chaud là, allez, prends ta revenche !")
         }
         false
       } else if (attempts > 0) {
@@ -45,8 +51,9 @@ object MysteryNumberGame extends App {
   }
 
   // --- Initialization ---
-  val akinator = new MysteryNumber()
-  var continuer = true
+  var akinator = new MysteryNumber()
+  var continue = true
+
   // --- Intro ---
   println(
     """
@@ -61,14 +68,39 @@ object MysteryNumberGame extends App {
   println("⚙️Le nombre à deviner se trouve entre 0 et 10 ")
 
   // --- Main Loop ---
-  var attempts = 5
-  while (continuer) {
-    val choice = readLine("\nAlors petit devin, quel est le nombre mystère ? : ").toInt
-    attempts -= 1 // Decrementing the attempts after each match
-    val resultat = akinator.deviner(choice, attempts) // Call of deviner() method
-    continuer = resultat
+  var attempts = Random.between(3, 6) // Number of random attempts
+
+  while (continue) {
+
+    val choice = readLine("\nAlors petit devin, quel est le nombre mystère ? : ")
+    var result = true
+    // A check of the type of returned value
+    choice.toIntOption match {
+      case Some(choice) =>
+        attempts -= 1 // Decrementing the attempts after each match
+        result = akinator.guessMethod(choice, attempts) // Calling the guessMethod()
+      case None =>
+        println("⚠️ Ce n'est pas un nombre ! Essaie encore.")
+    }
+
+    // --- Replay method---
+    if (!result) {
+      val replay = readLine("\nVeux-tu rejouer? (o/n) : ").toLowerCase
+      replay match {
+        case "o" =>
+          continue = true
+          attempts = Random.between(3, 6)
+          akinator = new MysteryNumber()
+        case "n" =>
+          println("A bientôt petit devin !")
+          continue = false
+        case _ =>
+          println("Entrée invalide, fin de partie.")
+          continue = false
+      }
+    }
   }
 
-  // version 1.1
+  // version 1.2
 
 }
