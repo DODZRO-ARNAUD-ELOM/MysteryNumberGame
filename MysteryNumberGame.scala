@@ -18,7 +18,6 @@ object MysteryNumberGame extends App {
     val mysteryNumber = Random.between(0, 10) // Value to guess
     //val mysteryNumber = 5 // Test value
 
-
     // Method that compares the sugestion value to the actual value
     def guessMethod(userChoice: Int, attempts: Int): Boolean = {
 
@@ -32,6 +31,7 @@ object MysteryNumberGame extends App {
           case 1 => println("Bravo, tu m'as donné des suilleurs froides !")
           case 0 => println("😫 Olala, tu n'étais pas chaud là, allez, prends ta revenche !")
         }
+        winGame += 1
         false
       } else if (attempts > 0) {
         println(s"Dommage petit génie, il te reste ❗$attempts❗tentatives! 🎰")
@@ -42,9 +42,9 @@ object MysteryNumberGame extends App {
         println(
           s"""
              |
-             |
              |$mysteryNumber
              |""".stripMargin)
+        loseGame += 1
         false
       }
     }
@@ -53,6 +53,8 @@ object MysteryNumberGame extends App {
   // --- Initialization ---
   var akinator = new MysteryNumber()
   var continue = true
+  var winGame = 0
+  var loseGame = 0
 
   // --- Intro ---
   println(
@@ -83,6 +85,8 @@ object MysteryNumberGame extends App {
         println("⚠️ Ce n'est pas un nombre ! Essaie encore.")
     }
 
+
+
     // --- Replay method---
     if (!result) {
       val replay = readLine("\nVeux-tu rejouer? (o/n) : ").toLowerCase
@@ -93,14 +97,16 @@ object MysteryNumberGame extends App {
           akinator = new MysteryNumber()
         case "n" =>
           println("A bientôt petit devin !")
+          println(s"\n\n Bilan : $winGame victoire(s) - $loseGame défaite(s)")
           continue = false
         case _ =>
           println("Entrée invalide, fin de partie.")
+          println(s"\n\n Bilan : $winGame victoire(s) - $loseGame défaite(s)")
           continue = false
       }
     }
   }
 
-  // version 1.2
+  // version 1.3
 
 }
